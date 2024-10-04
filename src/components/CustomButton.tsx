@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Pressable, TouchableOpacity } from 'react-native';
-import colors from '../../res/themes/Colors';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import colors from '../res/themes/Colors';
 
 export type ButtonProps = {
   title: string;
@@ -19,6 +19,8 @@ const CustomButton = ({ title,onPress,disabled,backgroundColor}: ButtonProps) =>
    </TouchableOpacity>
   );
 };
+
+
 const styles = StyleSheet.create({
     container:{
         alignItems: 'center',

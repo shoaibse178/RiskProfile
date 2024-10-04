@@ -1,7 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import QuestionnaireReducer from './reducers/QuestionnaireReducer';
+import questionsReducer from './reducers/QuestionsReducer';
 
-//combine all reducers
-export default combineReducers({
-    QuestionnaireReducer,
+const RootReducer = combineReducers({
+    questions: questionsReducer,
 });
+
+export default RootReducer;
+

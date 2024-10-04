@@ -1,50 +1,44 @@
 import { StyleSheet } from "react-native";
-import colors from "../../../res/themes/Colors";
+import colors from "../../res/themes/Colors";
 
 const styles = StyleSheet.create({
-    backgroundImage: {
+    container: {
       flex: 1,
-      justifyContent: 'flex-end',
     },
-    spacing: {
-      flex: 1,
-      justifyContent: 'center',
+    scoreView:{
+      flex:0.35,
+      backgroundColor:colors.primaryColor,
+      borderBottomRightRadius:40,
+      borderBottomLeftRadius:40,
+      justifyContent:'center'
     },
-    yourScore: {
+    riskDescriptionView:{
+      flex:0.5,   
+      paddingHorizontal:15,
+      alignItems:'center',
+      paddingTop:20,   
+    },
+    scoreText: {
       alignSelf: 'center',
       fontWeight: 'bold',
-      color: colors.primaryColor,
-      fontSize:20
-    },
-    textContainer: {
-      flexShrink: 1,
-      marginHorizontal: 10,
-      marginBottom: 20,
-      paddingBottom: 20,
-      paddingHorizontal: 10,
-    },
-    feedbackTitle: {
-      color: colors.grayColor,
-      fontWeight: '600',
-      textAlign: 'center',
-      marginTop: 20,
-      marginBottom: 10,
-      fontSize:18,
-    },
-    nextButton: {
-      backgroundColor: colors.primaryColor,
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: 100,
-      width: 100,
-      borderRadius: 50,
-    },
-    nextButtonText: {
-      fontSize: 14,
-      fontWeight: '500',
       color: colors.white,
+      fontSize:70
     },
-    buttonContainer: {position: 'absolute', bottom: 10, right: 10},
+    feedbackText: {
+      color: colors.white,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontSize:20,
+    },
+    descriptionText:{
+      fontSize:16,
+      lineHeight:30
+    },
+    buttonContainer: {
+      flex:0.15,
+      alignItems:'center',
+      justifyContent:'center',
+    },
   });
 
-  export default styles
+  export default styles;
