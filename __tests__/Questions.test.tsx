@@ -1,5 +1,3 @@
-// Questions.test.tsx
-
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
@@ -7,7 +5,6 @@ import configureStore from 'redux-mock-store';
 import Questions from '../src/screens/questions/Questions';
 import { QUESTIONS } from '../src/core/helpers/Data';
 import Toast from 'react-native-toast-message';
-import { submitAnswers } from '../src/redux/reducers/QuestionsReducer';
 
 
 // Mock the Toast component

@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, useWindowDimensions, TouchableOpacity } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { QUESTIONS } from '../../core/helpers/Data';
 import { useDispatch } from 'react-redux';
 import { submitAnswers } from '../../redux/reducers/QuestionsReducer';
-import { NavigationProp } from '@react-navigation/native';
 import colors from '../../res/themes/Colors';
 import Strings from '../../res/strings/Strings';
 import CustomButton from '../../components/CustomButton';
@@ -12,6 +11,7 @@ import Toast from 'react-native-toast-message';
 import styles from './Styles';
 import { resetActions } from '../../core/navigation/NavigationServices';
 import QuestionItem from '../../components/QuestionItem';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const Questions: React.FC = () => {

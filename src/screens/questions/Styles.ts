@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,Platform } from "react-native";
 import colors from "../../res/themes/Colors";
 
 const styles = StyleSheet.create({
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
       backgroundColor: colors.white,
     },
     headerView:{
-      flex:0.13,
+      flex: Platform.OS === 'ios' ? 0.13 : 0.1,
       backgroundColor: colors.primaryColor,
       alignItems:'center',
       justifyContent:'flex-end',
