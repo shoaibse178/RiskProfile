@@ -52,7 +52,9 @@ const Welcome: React.FC = () => {
             />
             {error && <Text style={styles.error}>{Strings.NAME_REQUIRED}</Text>}
           </View>
-          <CustomButton title={Strings.START} onPress={handleSubmit} marginTop={50} />
+          <View style={styles.buttonContainer}>
+            <CustomButton title={Strings.START} onPress={handleSubmit} marginTop={50} />
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

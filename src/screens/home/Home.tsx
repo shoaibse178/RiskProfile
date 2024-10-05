@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, useWindowDimensions, Alert } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import colors from '../../assets/colors/Colors';
 import Strings from '../../utils/Strings';
 import CustomButton from '../../components/CustomButton';
@@ -9,22 +9,15 @@ import Toast from 'react-native-toast-message';
 import styles from './Styles';
 import { QUESTIONS } from '../../constants/Data';
 import QuestionComponent from '../../components/QuestionComponent';
-import ResultModal from '../../components/ResultModal';
 import { resetActions } from '../../navigation/NavigationServices';
-import { resetUserState } from '../../redux/reducers/AnswersReducer';
 import { RootState } from '../../redux/store';
 
 
 const Home: React.FC = () => {
     const carouselReference = useRef<any>(null);
-    const dispatch = useDispatch();
-    const { name, answers } = useSelector((state: RootState) => state.answers);
-
+    const { answers } = useSelector((state: RootState) => state.answers);
     const { width } = useWindowDimensions();
     const [activeSlide, setActiveSlide] = useState<number>(0);
-    const [isModalVisible, setModalVisible] = useState<boolean>(false);
-    const [totalScore, setTotalScore] = useState<number>(0);
-    const [riskLevel, setRiskLevel] = useState<string>('');
 
 
     const calculateScore = () => {
@@ -40,9 +33,6 @@ const Home: React.FC = () => {
         if (score <= 10) riskLevel = Strings.LOW;
         else if (score <= 20) riskLevel = Strings.MEDIUM;
         else riskLevel = Strings.HIGH;
-
-        setTotalScore(score);
-        setRiskLevel(riskLevel);
         return { score, riskLevel };
     };
 
@@ -54,16 +44,9 @@ const Home: React.FC = () => {
                 return;
             }
             const data = calculateScore();
-            resetActions('Result',{userData:data})
-            // setModalVisible(true);
+            resetActions('Result', { userData: data })
         }
     };
-
-    const closeModalHandler = () => {
-        dispatch(resetUserState());
-        setModalVisible(false);
-        resetActions('Welcome')
-    }
 
     const onPressNext = () => {
         const currentAnswer = answers?.[QUESTIONS[activeSlide].id];
@@ -89,7 +72,7 @@ const Home: React.FC = () => {
                 position: 'top',
                 visibilityTime: 2500,
                 autoHide: true,
-                topOffset: 70,
+                topOffset: 55,
             }));
     }
 
@@ -99,19 +82,13 @@ const Home: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.headerView}>
-                <Text style={styles.headerText}>Questions</Text>
+            <View style={styles.questionProgressCircle}>
+                <Text style={styles.numberText}>
+                    {activeSlide + 1}/{QUESTIONS.length}
+                </Text>
             </View>
 
-            <View style={styles.questionProgressView}>
-                <View style={styles.questionProgressCircle}>
-                    <Text style={styles.numberText}>
-                        {activeSlide + 1}/{QUESTIONS.length}
-                    </Text>
-                </View>
-            </View>
-
-            <View style={styles.carouselView}>
+            <View>
                 <Carousel
                     ref={carouselReference}
                     layout={'default'}
@@ -136,14 +113,6 @@ const Home: React.FC = () => {
                     </>
                 )}
             </View>
-
-            <ResultModal
-                isVisible={isModalVisible}
-                onClose={closeModalHandler}
-                name={name}
-                totalScore={totalScore}
-                riskLevel={riskLevel}
-            />
         </View>
     );
 };

@@ -4,6 +4,7 @@ import colors from "../../assets/colors/Colors";
 const styles = StyleSheet.create({
   avoidingView: {
     flex: 1,
+    backgroundColor: colors.white,
   },
   scrollView: {
     flexGrow: 1,
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 80,
+    marginTop: 40,
   },
   viewWelcomeDescription: {
     alignItems: 'center',
@@ -62,7 +63,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     marginTop: 10,
-  }
+  },
+  buttonContainer: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    bottom:10
+  },
 });
 
 export default styles;

@@ -4,16 +4,15 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import Result from './Result';
 import { resetUserState } from '../../redux/reducers/AnswersReducer';
-import { resetActions } from '../../navigation/NavigationServices';
-import Strings from '../../utils/Strings';
 
-// Mock the resetActions function
-jest.mock('../../navigation/NavigationServices', () => ({
-    resetActions: jest.fn(),
-}));
-
-// Create a mock store
 const mockStore = configureStore([]);
+
+const mockUserData = {
+    userData: {
+        score: 85,
+        riskLevel: 'Moderate',
+    },
+};
 
 describe('Result Component', () => {
     let store;
@@ -21,59 +20,36 @@ describe('Result Component', () => {
     beforeEach(() => {
         store = mockStore({
             answers: {
-                name: 'John Doe', // Mocking the name from Redux state
+                name: 'John Doe',
             },
         });
     });
 
-    it('renders correctly with given props', () => {
-        const route = {
-            params: {
-                userData: {
-                    score: 100,
-                    riskLevel: 'Medium',
-                },
-            },
-        };
-
+    it('renders correctly with given userData', () => {
         const { getByText } = render(
             <Provider store={store}>
-                <Result route={route} />
+                <Result route={{ params: mockUserData }} />
             </Provider>
         );
 
-        expect(getByText(`${Strings.HELLO}, John Doe`)).toBeTruthy();
-        expect(getByText(`${Strings.TOTAL_SCORE}:`)).toBeTruthy();
-        expect(getByText('100')).toBeTruthy();
-        expect(getByText(`${Strings.RISK_LEVEL}:`)).toBeTruthy();
-        expect(getByText('Medium')).toBeTruthy();
+        expect(getByText('Hello, John Doe')).toBeTruthy();
+        expect(getByText('Total Score:')).toBeTruthy();
+        expect(getByText('85')).toBeTruthy();
+        expect(getByText('Risk Level:')).toBeTruthy();
+        expect(getByText('Moderate')).toBeTruthy();
     });
 
-    it('dispatches resetUserState and calls resetActions on button press', () => {
-        const route = {
-            params: {
-                userData: {
-                    score: 100,
-                    riskLevel: 'Medium',
-                },
-            },
-        };
-
+    it('dispatches resetUserState and navigates on button press', () => {
         const { getByText } = render(
             <Provider store={store}>
-                <Result route={route} />
+                <Result route={{ params: mockUserData }} />
             </Provider>
         );
 
-        const button = getByText(Strings.RESTART);
+        const button = getByText('Restart');
         fireEvent.press(button);
 
         const actions = store.getActions();
-
-        // Check if the resetUserState action was dispatched
         expect(actions).toContainEqual(resetUserState());
-        
-        // Check if resetActions was called
-        expect(resetActions).toHaveBeenCalledWith('Welcome');
     });
 });

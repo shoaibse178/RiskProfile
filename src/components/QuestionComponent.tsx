@@ -4,6 +4,7 @@ import { Option, Question } from '../constants/Data';
 import AnswerOption from './AnswerOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAnswer } from '../redux/reducers/AnswersReducer';
+import colors from '../assets/colors/Colors';
 
 interface QuestionProps {
     question: Question;
@@ -35,12 +36,13 @@ const QuestionComponent: React.FC<QuestionProps> = ({ question }) => {
 const styles = StyleSheet.create({
     questionContainer: {
         marginHorizontal: 15,
-        marginTop: 7,
+        marginTop: 25,
     },
     questionLabel: {
         fontWeight: 'bold',
         fontSize: 15,
         marginBottom: 10,
+        color:colors.black,
     },
 });
 

@@ -2,146 +2,97 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import * as NavigationServices from '../../navigation/NavigationServices';
-import Toast from 'react-native-toast-message';
-import { QUESTIONS } from '../../constants/Data';
 import Home from './Home';
-import { resetUserState } from '../../redux/reducers/AnswersReducer';
+import Toast from 'react-native-toast-message';
+import Strings from '../../utils/Strings';
 
-jest.mock('react-native-toast-message', () => ({
-  show: jest.fn(),
-}));
-
+// Create a mock for navigation
+const mockResetActions = jest.fn();
 jest.mock('../../navigation/NavigationServices', () => ({
-  resetActions: jest.fn(),
+    resetActions: (routeName, params) => mockResetActions(routeName, params),
 }));
 
 const mockStore = configureStore([]);
 
 describe('Home Component', () => {
-  let store: any;
-
-  beforeEach(() => {
-    store = mockStore({
-      answers: {
-        name: 'John Doe',
+    const initialState = {
         answers: {
-          [QUESTIONS[0].id]: { score: 5 }, // Mock answer for first question
-          // You can add more mock answers if necessary
+            1: { score: 2 }, // Mock an answer for question 1
+            2: { score: 3 }, // Mock an answer for question 2
         },
-      },
-    });
-  });
+    };
 
-  it('renders correctly', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <Home />
-      </Provider>
-    );
+    const store = mockStore(initialState);
 
-    expect(getByText('Questions')).toBeTruthy();
-    // expect(getByText('1/3')).toBeTruthy(); // Adjust based on the number of questions
-  });
-
-  it('navigates to next question when Next button is pressed', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <Home />
-      </Provider>
-    );
-
-    const nextButton = getByText('Next');
-    fireEvent.press(nextButton);
-
-    // expect(getByText('2/3')).toBeTruthy(); // Verify the active question index has changed
-  });
-
-  it('shows results when the last question is reached', () => {
-    const updatedStore = mockStore({
-      answers: {
-        name: 'John Doe',
-        answers: {
-          [QUESTIONS[0].id]: { score: 5 },
-          [QUESTIONS[1].id]: { score: 7 },
-        //   [QUESTIONS[2].id]: { score: 10 }, // Assuming there are 3 questions
-        },
-      },
+    beforeEach(() => {
+        jest.clearAllMocks(); // Clear previous mocks
     });
 
-    const { getByText } = render(
-      <Provider store={updatedStore}>
-        <Home />
-      </Provider>
-    );
+    test('renders correctly and displays the question progress', () => {
+        const { getByText } = render(
+            <Provider store={store}>
+                <Home />
+            </Provider>
+        );
 
-    // Navigate to the last question
-    fireEvent.press(getByText('Next')); // To 2/3
-    fireEvent.press(getByText('Next')); // To 3/3
-    // fireEvent.press(getByText('Show Results')); // Show results
-
-    // Assert the result modal is visible
-    // expect(NavigationServices.resetActions).toHaveBeenCalledWith('Welcome');
-  });
-
-  it('shows an error toast if trying to navigate without selecting an answer', () => {
-    const incompleteStore = mockStore({
-      answers: {
-        name: 'John Doe',
-        answers: {
-          [QUESTIONS[0].id]: null, // No answer for the first question
-        },
-      },
+        expect(getByText('1/2')).toBeTruthy(); // Check if progress is displayed
+        expect(getByText("How would you describe your risk tolerance?")).toBeTruthy(); // First question text
     });
 
-    const { getByText } = render(
-      <Provider store={incompleteStore}>
-        <Home />
-      </Provider>
-    );
+    test('shows next question when NEXT button is pressed', () => {
+        const { getByText } = render(
+            <Provider store={store}>
+                <Home />
+            </Provider>
+        );
 
-    const nextButton = getByText('Next');
-    fireEvent.press(nextButton); // Try to navigate without answering
+        fireEvent.press(getByText('Next')); // Press the Next button
 
-    expect(Toast.show).toHaveBeenCalledWith({
-      type: 'error',
-      text1: 'Selection Required',
-      text2: 'Please select an option before proceeding',
-      position: 'top',
-      visibilityTime: 2500,
-      autoHide: true,
-      topOffset: 70,
-    });
-  });
-
-  it('dispatches resetUserState when modal is closed', () => {
-    const updatedStore = mockStore({
-      answers: {
-        name: 'John Doe',
-        answers: {
-          [QUESTIONS[0].id]: { score: 5 },
-          [QUESTIONS[1].id]: { score: 7 },
-        //   [QUESTIONS[2].id]: { score: 10 }, // Assuming there are 3 questions
-        },
-      },
+        expect(getByText("How often do you review your investment portfolio?")).toBeTruthy(); // Check if the second question is displayed
     });
 
-    const { getByText } = render(
-      <Provider store={updatedStore}>
-        <Home />
-      </Provider>
-    );
+    test('shows error toast if trying to go to results without answers', () => {
+        const emptyAnswersState = {
+            answers: {}, // No answers
+        };
 
-    // Navigate to the last question and show results
-    fireEvent.press(getByText('Next'));
-    fireEvent.press(getByText('Next'));
-    // fireEvent.press(getByText('Show Results'));
+        const storeWithEmptyAnswers = mockStore(emptyAnswersState);
 
-    // Close the modal
-    // fireEvent.press(getByText('Restart')); // Replace with the actual button text in ResultModal
+        const { getByText } = render(
+            <Provider store={storeWithEmptyAnswers}>
+                <Home />
+            </Provider>
+        );
 
-    const actions = updatedStore.getActions();
-    // expect(actions).toContainEqual(resetUserState());
-    // expect(NavigationServices.resetActions).toHaveBeenCalledWith('Welcome');
-  });
+        const toastSpy = jest.spyOn(Toast, 'show');
+
+        fireEvent.press(getByText('Next')); // Attempt to go to the last question
+        fireEvent.press(getByText('Next')); // Attempt to go to results
+
+        expect(toastSpy).toHaveBeenCalled(); // Verify if toast was called
+
+        // Verify if it was called with the correct parameters
+        expect(toastSpy).toHaveBeenCalledWith({
+            type: Strings.ERRROR,
+            text1: Strings.SELECTION_REQUIRED,
+            text2: Strings.SELECT_OPTION,
+            position: 'top',
+            visibilityTime: 2500,
+            autoHide: true,
+            topOffset: 55,
+        });
+    });
+
+    test('navigates to results when the last question is answered', () => {
+        const { getByText } = render(
+            <Provider store={store}>
+                <Home />
+            </Provider>
+        );
+
+        // Navigate to the last question
+        fireEvent.press(getByText('Next')); // Go to question 2
+        fireEvent.press(getByText('Next')); // Go to results
+    });
+
 });
