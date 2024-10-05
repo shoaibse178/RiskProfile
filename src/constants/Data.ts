@@ -1,13 +1,13 @@
 export interface Option {
-  key: string;
-  label: string;
-  score: number;
+    key: string;
+    label: string;
+    score: number;
 }
 
 export interface Question {
-  id: number;
-  label: string;
-  options: Option[];
+    id: number;
+    label: string;
+    options: Option[];
 }
 
 export const QUESTIONS = [

@@ -1,9 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import questionsReducer from './reducers/QuestionsReducer';
+import answersReducer from './reducers/AnswersReducer';
 
 const RootReducer = combineReducers({
-    questions: questionsReducer,
+    answers: answersReducer,
 });
 
 export default RootReducer;
+
 
