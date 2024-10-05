@@ -48,6 +48,7 @@ const Welcome: React.FC = () => {
               editable={true}
               placeholder={Strings.ENTER_NAME}
               style={styles.input}
+              maxLength={20}
             />
             {error && <Text style={styles.error}>{Strings.NAME_REQUIRED}</Text>}
           </View>

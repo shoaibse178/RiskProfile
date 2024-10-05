@@ -43,6 +43,7 @@ const Home: React.FC = () => {
 
         setTotalScore(score);
         setRiskLevel(riskLevel);
+        return { score, riskLevel };
     };
 
     const onPressShowResults = () => {
@@ -52,8 +53,9 @@ const Home: React.FC = () => {
                 showErrorToast();
                 return;
             }
-            calculateScore();
-            setModalVisible(true);
+            const data = calculateScore();
+            resetActions('Result',{userData:data})
+            // setModalVisible(true);
         }
     };
 
