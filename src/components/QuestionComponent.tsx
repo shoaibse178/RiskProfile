@@ -36,7 +36,7 @@ const QuestionComponent: React.FC<QuestionProps> = ({ question }) => {
 const styles = StyleSheet.create({
     questionContainer: {
         marginHorizontal: 15,
-        marginTop: 25,
+        marginTop: 35,
     },
     questionLabel: {
         fontWeight: 'bold',

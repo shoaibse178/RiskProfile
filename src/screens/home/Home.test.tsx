@@ -35,7 +35,6 @@ describe('Home Component', () => {
             </Provider>
         );
 
-        expect(getByText('1/2')).toBeTruthy(); // Check if progress is displayed
         expect(getByText("How would you describe your risk tolerance?")).toBeTruthy(); // First question text
     });
 

@@ -7,11 +7,28 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     justifyContent: 'flex-end',
   },
+  viewName: {
+    flex: 0.25,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   name: {
     alignSelf: 'center',
     fontWeight: 'bold',
     color: colors.black,
     fontSize: 30,
+  },
+  viewScoreRiskLevel: {
+    flex: 0.75,
+    backgroundColor: 'white',
+    paddingTop: 20,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    paddingHorizontal: 20,
+    borderTopWidth: 15,
+    borderColor: colors.primaryColor,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
   },
   viewTitleText: {
     flexDirection: 'row',

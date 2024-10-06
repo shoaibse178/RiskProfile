@@ -7,7 +7,6 @@ import Strings from '../../utils/Strings';
 import { resetActions } from '../../navigation/NavigationServices';
 import { resetUserState } from '../../redux/reducers/AnswersReducer';
 import { RootState } from '../../redux/store';
-import colors from '../../assets/colors/Colors';
 
 interface UserData {
     score: number;
@@ -40,21 +39,11 @@ const Result: React.FC<ResultProps> = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <View style={{
-                flex: 0.25, alignItems: 'center',
-                justifyContent: 'center'
-
-            }}>
+            <View style={styles.viewName}>
                 <Text style={styles.name}>{Strings.HELLO}, {name}</Text>
             </View>
 
-            <View style={{
-                flex: 0.75, backgroundColor: 'white',
-                paddingTop: 20, borderTopRightRadius: 25, borderTopLeftRadius: 25,
-                paddingHorizontal: 20, borderTopWidth: 15, borderColor: colors.primaryColor,
-                borderLeftWidth: 1, borderRightWidth: 1,
-
-            }}>
+            <View style={styles.viewScoreRiskLevel}>
                 <View style={styles.viewTitleText}>
                     <Text style={styles.title}>{Strings.TOTAL_SCORE}:</Text>
                     <Text style={styles.text}>{totalScore}</Text>

@@ -16,7 +16,7 @@ const Strings = {
     ERRROR: 'error',
     SELECTION_REQUIRED: 'Selection Required',
     SELECT_OPTION: 'Please select an option before proceeding',
-    DESCRIPTION: 'You will answer a total of 10 questions. After submitting all your answers, you will see your total score and risk level based on your responses.'
+    DESCRIPTION: 'You will answer total questions. After submitting all your answers, you will see your total score and risk level based on your responses.'
 }
 
 export default Strings;

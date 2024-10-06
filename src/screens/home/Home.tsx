@@ -1,22 +1,19 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, useWindowDimensions } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import colors from '../../assets/colors/Colors';
 import Strings from '../../utils/Strings';
-import CustomButton from '../../components/CustomButton';
 import Toast from 'react-native-toast-message';
 import styles from './Styles';
 import { QUESTIONS } from '../../constants/Data';
 import QuestionComponent from '../../components/QuestionComponent';
 import { resetActions } from '../../navigation/NavigationServices';
 import { RootState } from '../../redux/store';
+import QuestionCarousel from '../../components/QuestionCarousel';
 
 
 const Home: React.FC = () => {
     const carouselReference = useRef<any>(null);
     const { answers } = useSelector((state: RootState) => state.answers);
-    const { width } = useWindowDimensions();
     const [activeSlide, setActiveSlide] = useState<number>(0);
 
 
@@ -82,37 +79,16 @@ const Home: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.questionProgressCircle}>
-                <Text style={styles.numberText}>
-                    {activeSlide + 1}/{QUESTIONS.length}
-                </Text>
-            </View>
-
-            <View>
-                <Carousel
-                    ref={carouselReference}
-                    layout={'default'}
-                    data={QUESTIONS}
-                    sliderWidth={width}
-                    itemWidth={width}
-                    renderItem={renderItem}
-                    lockScrollWhileSnapping={true}
-                    scrollEnabled={false}
-                    useScrollView={true}
-                    onSnapToItem={(index: number) => setActiveSlide(index)}
-                />
-            </View>
-
-            <View style={styles.buttonContainer}>
-                {activeSlide === QUESTIONS.length - 1 ? (
-                    <CustomButton title={Strings.SHOW_RESULTS} onPress={onPressShowResults} />
-                ) : (
-                    <>
-                        <CustomButton title={Strings.BACK} onPress={onPressBack} disabled={activeSlide === 0} backgroundColor={activeSlide === 0 ? colors.disabledColor : colors.primaryColor} />
-                        <CustomButton title={Strings.NEXT} onPress={onPressNext} />
-                    </>
-                )}
-            </View>
+        <QuestionCarousel
+            QUESTIONS={QUESTIONS}
+            activeSlide={activeSlide}
+            setActiveSlide={setActiveSlide}
+            carouselReference={carouselReference}
+            renderItem={renderItem}
+            onPressShowResults={onPressShowResults}
+            onPressBack={onPressBack}
+            onPressNext={onPressNext}
+        />
         </View>
     );
 };
